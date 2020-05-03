@@ -1,0 +1,24 @@
+# - Roadmap
+
+- [x] Faire un docker 
+- [x] Faire un makefile pour simplifier sa gestion
+- [x] Aucune personne autre que l'hote de doit pouvoir accéder au information
+- [x] Automatiser leur déploiement et execution
+- [x] Récupérer un paramètre d'environment lors du `make start`
+- [ ] Faire en sorte qu'il y est un paramètre par défaut (Pas d'update)
+- [ ] Se paramètre fais exécuter les scripts python suivant ça valeur (0 = None, Min = 10sec et Max = 1h)
+- [ ] Récupérer et mettre en forme les informations avec le SDK d'AWS en python
+    - [x] Route53
+    - [x] CloudFront
+    - [ ] S3
+    - [ ] ALB
+- [x] Faire les relations entre les différents services
+    - [x] Route53 / Cloudfront
+    - [ ] CloudFront & S3 / ALB
+- [ ] Pouvoir anonymisé le rendu 
+  - [x] Transformer les données une image lisible
+  - [x] Gestion via Makefile
+- [ ] Faire en sorte qu'un simple `make start` et du clic sur l'interface suffit
+- [x] S'assurer que les seules dépendances sont docker et python3
+- [x] S'assurer que seul le droit IAM `arn:aws:iam::aws:policy/ReadOnlyAccess`
+- [x] S'assurer que les graph pré-fait soit simple et pas remplie de trop d'information

@@ -1,0 +1,42 @@
+# - Objectifs
+
+-	**Cartographier toute une infrastructure AWS en live**
+    - [ ] Récupérer un paramètre d'environment lors du `make start` :calendar:
+    - [ ] Récupérer et mettre en forme les informations avec le SDK d'AWS en python
+      - [ ] Route53 :calendar:
+      - [ ] CloudFront :calendar:
+      - [ ] S3 :calendar:
+      - [ ] ALB :calendar:
+      - [ ] Lambda
+      - [ ] EC2
+      - [ ] Security Group
+      - [ ] EBS
+    - [ ] Faire les relations entre les différents services
+      - [ ] Route53 / Cloudfront :calendar:
+      - [ ] CloudFront & S3 / ALB :calendar:
+      - [ ] ALB vers EC2 / Lambda
+      - [ ] EC2 / Security Group
+      - [ ] EC2 / EBS
+    - [ ] Faire en sorte qu'il y est un paramètre par défaut (Pas d'update) :calendar:
+    - [ ] Se paramètre fais exécuter les scripts python suivant ça valeur (0 = None, Min = 10sec et Max = 1h) :calendar:
+-	**Pouvoir en extraire une image/pdf (le(s) format(s) reste à définir)**
+    - Faire un script qui :
+      - [ ] Dump toutes les données des bases dans un format de traitement simple (json, csv, xml, etc.s'adapter au mieux pour le passer en image) :calendar:
+      - [ ] Transformer les données une image lisible :calendar:
+      - [ ] Gestion via Makefile :calendar:
+      - [ ] Choix de l'extraction en fonction des scripts mis à disposition :calendar:
+-	**Pouvoir déployer, exécuter sous n’importe quels OS et par tous**
+    - [ ] Faire un docker :calendar: 
+    - [ ] Faire un makefile pour simplifier sa gestion :calendar: 
+    - [ ] S'assurer que les seules dépendances sont docker et python3 :calendar:
+-	**Avoir des graphes simples et lisible**
+    - [ ] S'assurer que les graph pré-fait soit simple et pas remplie de trop d'information :calendar:
+-	**Être simple et intuitif d’usage**
+    - [ ] Inclure les scripts dans l'interface neo4j :calendar:
+    - [ ] Automatiser leur déploiement et execution :calendar:
+    - [ ] Faire en sorte qu'un simple `make start` et du clic sur l'interface suffit :calendar:
+-	**Être totalement Offline**
+    -  [ ] Aucune personne autre que l'hote de doit pouvoir accéder au information :calendar:
+    -  [ ] Pouvoir anonymisé le rendu :calendar: 
+-	**Doit fonctionner seulement avec des droits de lectures au maximum possibles**
+    -  [ ] S'assurer que seul le droit IAM `arn:aws:iam::aws:policy/ReadOnlyAccess` :calendar:
