@@ -13,7 +13,7 @@ DOCKER_RUN  = docker run \
 
 ##
 ## Project
-##----------
+##-----------
 
 build: ## Build the container
 	@docker build -t $(DOCKER_NAME) $(CURRENT_DIR) --no-cache
