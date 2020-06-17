@@ -1,8 +1,9 @@
 CURRENT_DIR = $(shell pwd)
 DOCKER_NAME = helios
 DOCKER_RUN  = docker run \
+							--rm \
 							--name $(DOCKER_NAME) \
-							-p7474:7474 -p7687:7687 \
+							-p127.0.0.1:7474:7474 -p127.0.0.1:7687:7687 \
 							-d \
 							-v $(CURRENT_DIR)/neo4j/data:/data \
 							-v $(CURRENT_DIR)/neo4j/logs:/logs \
