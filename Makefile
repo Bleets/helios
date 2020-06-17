@@ -13,13 +13,13 @@ DOCKER_RUN  = docker run \
 
 ##
 ## Project
-##----------
+##------------------------------
 
 build: ## Build the container
 	@docker build -t $(DOCKER_NAME) $(CURRENT_DIR) --no-cache
 
 start: ## Start the project
-	@$(DOCKER_RUN)
+	@$(DOCKER_RUN) && docker ps -a
 
 stop: ## Stop the project
 	@docker stop $(DOCKER_NAME)
@@ -28,7 +28,7 @@ clean: ## Remove the container use for the project
 	@docker rm $(DOCKER_NAME)
 
 bash: ## Access to the container throught /bin/bash
-	@$(EXEC) /bin/bash
+	@docker exec -it $(DOCKER_NAME) /bin/bash
 
 .PHONY: build bash start stop
 
