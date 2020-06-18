@@ -24,6 +24,9 @@ for i in liste:
 #   - Qui est à ce type de relation
 #   - Qui est à ce type de relation avec cette attribut
 
+# BONUS = cartographier nmap. Créer les noeuds des IPs avece relations port ouvert
+# (192.168.1.87)-[:Ouvert]>(7474)
+# (192.168.1.87)-[:Fermer]>(22)
 
 # EC2 (name=toto, tag.name="Vitrines", tag.bloc=lc)
 
