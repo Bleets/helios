@@ -9,7 +9,7 @@ DOCKER_RUN  = docker run \
 							-v $(CURRENT_DIR)/neo4j/logs:/logs \
 							-v $(CURRENT_DIR)/neo4j/import:/var/lib/neo4j/import \
 							-v $(CURRENT_DIR)/neo4j/plugins:/plugins \
-							--env NEO4J_AUTH=none \
+							--env NEO4J_AUTH=neo4j/test \
 							$(DOCKER_NAME)
 
 ##
