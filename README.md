@@ -1,5 +1,5 @@
 # :sunny: Helios :sunny:
-![GitHub](https://img.shields.io/github/license/bleets/helios)
+![GitHub](https://img.shields.io/github/license/Bleets/helios)
 
 Helios, is a student project about how to map a cloud infrastructure. The goal is to simplify visualization of the infrastructure between different services
 
