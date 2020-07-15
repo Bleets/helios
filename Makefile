@@ -33,7 +33,7 @@ build: ## Build the container
 
 start: ## Start the container
 	@$(DOCKER_RUN) && docker ps -a
-	@$(DOCKER_EXEC) "sleep 8 && python3 collect.py dev"
+	@$(DOCKER_EXEC) "sleep 10 && python3 collect.py dev"
 
 stop: ## Clean the DB and stop the container
 	@$(ERASE_DATA)
