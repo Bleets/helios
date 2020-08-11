@@ -1,0 +1,19 @@
+version: "3"
+services:
+  helios_neo4j:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile-neo4j
+    ports:
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    volumes:
+      - "./src:/app "
+      - "./neo4j/data:/data "
+      - "./neo4j/logs:/logs "
+      - "./neo4j/import:/var/lib/neo4j/import "
+      - "./neo4j/plugins:/plugins "
+    environment:
+      - "NEO4J_AUTH=neo4j/test"
+      # - AWS_ACCESS_KEY_ID: "$(AWS_ACCESS_KEY_ID)"
+      # - AWS_SECRET_ACCESS_KEY: "$(AWS_SECRET_ACCESS_KEY)"

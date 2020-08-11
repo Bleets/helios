@@ -47,6 +47,13 @@ def route53_collect():
             ## the visualieation of data in your browser will lag if you don't have a powerfull PC
 
             # while list_record_set["IsTruncated"]:
+            #     print("-----------------------------------------------")
+            #     print(
+            #         "DEBUG : NextRecordName : '{}' \n  NextRecordType '{}' ".format(
+            #             list_record_set["NextRecordName"],
+            #             list_record_set["NextRecordType"],
+            #         )
+            #     )
             #     list_record_set = r53_client.list_resource_record_sets(
             #         HostedZoneId=id_hostedzone,
             #         StartRecordName=str(list_record_set["NextRecordName"]),
