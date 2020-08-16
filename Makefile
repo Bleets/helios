@@ -1,5 +1,6 @@
 CURRENT_DIR = $(shell pwd)
 DOCKER_NAME = helios
+DOCKER_DEBUG = helios_helios_neo4j
 DOCKER_RUN  = docker run \
 							-it\
 							--rm \
@@ -33,7 +34,7 @@ build: ## Build the container
 
 start: ## Start the container
 	@$(DOCKER_RUN) && docker ps -a
-	@$(DOCKER_EXEC) "sleep 10 && python3 collect.py dev"
+	# @$(DOCKER_EXEC) "sleep 10 && python3 collect.py dev"
 
 stop: ## Clean the DB and stop the container
 	@$(ERASE_DATA)
