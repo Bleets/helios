@@ -15,5 +15,11 @@ services:
       - "./neo4j/plugins:/plugins "
     environment:
       - "NEO4J_AUTH=neo4j/test"
-      # - AWS_ACCESS_KEY_ID: "$(AWS_ACCESS_KEY_ID)"
-      # - AWS_SECRET_ACCESS_KEY: "$(AWS_SECRET_ACCESS_KEY)"
+  helios_python:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile-apps
+    ports: 
+      - "127.0.0.1:80:8000"
+    volumes:
+      - "./src:/app"
