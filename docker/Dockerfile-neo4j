@@ -2,4 +2,7 @@ FROM neo4j:4.0.0
 
 WORKDIR /app
 
+RUN apt-get update -y \
+  && apt-get install -y net-tools vim curl
+
 ADD conf/neo4j.conf /var/lib/neo4j/conf/neo4j.conf

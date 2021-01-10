@@ -1,4 +1,4 @@
 neo4j/*
 data/private/*
-test/*
+local/*
 conf/credentials

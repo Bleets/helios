@@ -1,5 +1,5 @@
 CURRENT_DIR = $(shell pwd)
-DOCKER_NAME = helios
+DOCKER_NAME = f4f2f539a16c
 DOCKER_DEBUG = helios_helios_neo4j
 DOCKER_RUN  = docker run \
 							-it\
@@ -23,7 +23,7 @@ AWS_ACCESS_KEY_ID     = $$(aws configure get aws_access_key_id --profile corp)
 AWS_SECRET_ACCESS_KEY = $$(aws configure get aws_secret_access_key --profile corp)
 
 # Some shortcut
-DOCKER_EXEC = docker exec -it $(DOCKER_NAME) /bin/bash -c 
+DOCKER_EXEC = docker exec -it $(DOCKER_NAME) /bin/sh -c 
 ERASE_DATA = $(DOCKER_EXEC) "python3 erase.py"
 ##
 ## Management Command

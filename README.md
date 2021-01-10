@@ -83,10 +83,10 @@ We use [SemVer](http://semver.org/) for versioning. For the available versions, 
 
 ## Authors
 
-* **Bleets** - [Bleets](https://github.com/Bleets)
-* **toxicz9** - [toxicz9](https://github.com/toxicz9)
-* **Daigen9** - [Daigen9](https://github.com/Daigen9)
-* **timotheTim** - [timotheTim](https://github.com/timotheTim)
+* **[Bleets](https://github.com/Bleets)**
+* **[toxicz9](https://github.com/toxicz9)**
+* **[Daigen9](https://github.com/Daigen9)**
+* **[timotheTim](https://github.com/timotheTim)**
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 

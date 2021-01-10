@@ -1,6 +1,6 @@
 version: "3"
 services:
-  helios_neo4j:
+  neo4j:
     build:
       context: ./
       dockerfile: docker/Dockerfile-neo4j
@@ -15,11 +15,15 @@ services:
       - "./neo4j/plugins:/plugins "
     environment:
       - "NEO4J_AUTH=neo4j/test"
-  helios_python:
+
+  python:
+    depends_on: 
+      - neo4j
     build:
       context: ./
       dockerfile: docker/Dockerfile-apps
     ports: 
-      - "127.0.0.1:80:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - "./src:/app"
+      - "./test:/app/test"
