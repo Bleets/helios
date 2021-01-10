@@ -6,4 +6,4 @@ ADD requirement.txt ./
 
 RUN pip3 install -r requirement.txt
 
-CMD cd html && python3 ../webserver.py 8000
+ENTRYPOINT [ "./docker-entrypoint.sh" ]

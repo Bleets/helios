@@ -17,11 +17,11 @@ services:
       - "NEO4J_AUTH=neo4j/test"
 
   python:
-    depends_on: 
+    depends_on:
       - neo4j
     build:
       context: ./
-      dockerfile: docker/Dockerfile-apps
+      dockerfile: docker/Dockerfile-python
     ports: 
       - "127.0.0.1:8000:8000"
     volumes:
