@@ -3,7 +3,7 @@ import boto3
 import sys
 import pprint  # DEGUB : For well display dict
 
-DB = Graph("bolt:://neo4j-databases:7687", auth=("neo4j", "test"))
+DB = Graph("http://neo4j:7474", auth=("neo4j", "test"))
 
 # Setup envirnment
 def setup_env(profile="default"):
