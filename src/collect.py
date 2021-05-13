@@ -4,7 +4,7 @@ import sys
 import pprint  # DEGUB : For well display dict
 import cmap as CMAP
 
-DB = Graph("localhost:7474", auth=("neo4j", "test"))
+DB = Graph("http://localhost:7474", auth=("neo4j", "test"))
 
 # Setup envirnment
 def setup_env(profile="default"):

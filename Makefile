@@ -28,12 +28,15 @@ ERASE_DATA = $(DOCKER_EXEC) "python3 erase.py"
 ## Management Command
 ##------------------------------
 
+setup: ## /!\ Copy your ~/.credentials into a directoy gitignored /!\ 
+	@ cp ~/.aws/credentials conf/credentials
+
 build: ## Build the container
 	@docker build -t $(DOCKER_NAME) $(CURRENT_DIR) --no-cache
 
 start: ## Start the container
 	@$(DOCKER_RUN) && docker ps -a
-	@$(DOCKER_EXEC) "sleep 10 && python3 collect.py dev"
+	@$(DOCKER_EXEC) "sleep 15 && python3 collect.py dev"
 
 stop: ## Clean the DB and stop the container
 	@$(ERASE_DATA)

@@ -3,7 +3,7 @@ import boto3
 import sys
 import pprint  # DEGUB : For well display dict
 
-DB = Graph("localhost:7474", auth=("neo4j", "test"))
+DB = Graph("http://localhost:7474", auth=("neo4j", "test"))
 
 # The usage of the script
 def usage():
