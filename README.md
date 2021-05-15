@@ -3,22 +3,81 @@
 
 Helios, is a student project about how to map a cloud infrastructure. The goal is to simplify visualization of the infrastructure between different services
 
+## Table of contents
+- [:sunny: Helios :sunny:](#sunny-helios-sunny)
+  - [Table of contents](#table-of-contents)
+  - [Usage](#usage)
+    - [Prerequisites](#prerequisites)
+    - [Help](#help)
+    - [Install](#install)
+    - [First Run](#first-run)
+    - [Tips](#tips)
+    - [Refresh or switch AWS account](#refresh-or-switch-aws-account)
+    - [CMAP](#cmap)
+  - [Contributing](#contributing)
+  - [Versioning](#versioning)
+  - [Authors](#authors)
+  - [License](#license)
+  - [References](#references)
+
 ## Usage
 
 ### Prerequisites
-
+___
 For this project, you need :
 
 - Docker
 - python3
-- Good AWS configuration
+- :warning: Good AWS configuration, like this :
+```markdown
+[default]
+aws_access_key_id = <YOUR_AWS_KEY_ID>
+aws_secret_access_key = <YOUR_AWS_ACCESS_KEY>
+region = <AWS_REGION>
+output = json
 
-### Install
+[production]
+aws_access_key_id = <YOUR_AWS_KEY_ID>
+aws_secret_access_key = <YOUR_AWS_ACCESS_KEY>
+output = json
+region = <AWS_REGION>
 
+[development]
+role_arn = arn:aws:iam::<AWS_ACCOUNT_ID>:role/<YOUR_AWS_ROLE_NAME>
+source_profile = default
+output = json
+region = <AWS_REGION>
+```
+
+### Help
+___
+The code below is the result of the command `make` in the root directory. Don't hesitate to run it on your terminal !
+```markdown
+ Management Command
+------------------------------
+setup           /!\ Copy your ~/.credentials into a directoy gitignored /!\
+build           Build the container
+start           Start the container
+stop            Clean the DB and stop the container
+
+ Project Command
+------------------------------
+refresh         Refresh all data
+cmap            Cloud Mapper with a DNS in entrypoint
+
+ Debug Command
+------------------------------
+clean           Remove the container use for the project
+bash            Access to the container throught /bin/bash
+debug           Execute all test on neo4j datbase
+```
+###  Install
+___
 1. Setup your AWS Credentials
 
+**:warning: The command bellow will copy your ~/.aws/credentials into a directoy gitignored :warning:**
 ```bash
-cp ~/.aws/credentials ./conf/credentials
+make setup
 ```
 
 2. Build the docker containing all you need
@@ -27,7 +86,7 @@ make build
 ```
 
 ### First Run
-
+___
 **1.** Start the project
 ```bash
 make start
@@ -38,13 +97,13 @@ make start
 
 **3.** Click on `MATCH (n) RETURN n`, to see all data collect
 
-### TIPS
-
+### Tips
+___
 Attach the command, so it wont scroll down after each result
 ![attach command](img/attach.png)
 
 ### Refresh or switch AWS account
-
+___
 To refresh all data or use another AWS account, male sure your `.aws/credentials`  is correct
 
 **1.** Run the following command :
@@ -59,7 +118,7 @@ make refresh ENV=dev
 
 
 ### CMAP
-
+___
 **CMAP** allow to see all your ressources, start with an URL.
 
 **1.** Run the following command :
@@ -83,10 +142,10 @@ We use [SemVer](http://semver.org/) for versioning. For the available versions, 
 
 ## Authors
 
-* **Bleets** - [Bleets](https://github.com/Bleets)
-* **toxicz9** - [toxicz9](https://github.com/toxicz9)
-* **Daigen9** - [Daigen9](https://github.com/Daigen9)
-* **timotheTim** - [timotheTim](https://github.com/timotheTim)
+* [Bleets](https://github.com/Bleets)
+* [toxicz9](https://github.com/toxicz9)
+* [Daigen9](https://github.com/Daigen9)
+* [timotheTim](https://github.com/timotheTim)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 

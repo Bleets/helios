@@ -28,7 +28,7 @@ ERASE_DATA = $(DOCKER_EXEC) "python3 erase.py"
 ## Management Command
 ##------------------------------
 
-setup: ## /!\ Copy your ~/.credentials into a directoy gitignored /!\ 
+setup: ## /!\ Copy your ~/.aws/credentials into a directoy gitignored /!\ 
 	@ cp ~/.aws/credentials conf/credentials
 
 build: ## Build the container
@@ -64,7 +64,8 @@ clean: ## Remove the container use for the project
 bash: ## Access to the container throught /bin/bash
 	@docker exec -it $(DOCKER_NAME) /bin/bash
 
-
+debug: ## Execute all test on neo4j datbase
+	@$(DOCKER_EXEC) "python3 test/neo4j_connect.py"
 
 .PHONY: build start stop refresh cmap clean bash
 
