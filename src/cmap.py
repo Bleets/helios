@@ -147,7 +147,7 @@ def cloudfront_create_node(list_cloudfront):
                     tx.create(behavior_to_target)
                     tx.create(cloudfront_to_behavior)
 
-        tx.commit()
+        DB.commit(tx)
     except Exception as error:
         print("ERROR : An error occurred during the creation of node")
         print(str(error))

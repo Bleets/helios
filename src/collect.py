@@ -54,7 +54,7 @@ def route53_collect():
             #     )
             #     route53_record_create_node(zone, list_record_set, r53_client, tx)
 
-        tx.commit()
+        DB.commit(tx)
     except Exception as error:
         print("An error occurred getting Route53 ressource:")
         print(str(error))

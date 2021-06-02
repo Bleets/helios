@@ -1,5 +1,6 @@
-class neo4j_database:
+class neo4j:
   HOSTNAME = "http://localhost"
-  PORT = "7474"
-  USER = "neo4j"
-  PWD = "test"
+  class db:
+    PORT = "7474"
+    USER = "neo4j"
+    PWD = "test"

@@ -3,7 +3,7 @@ import traceback, sys, os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from libs.colors import colors
-from libs.settings import neo4j_database
+from libs.settings import neo4j as n
 
 # -- This Script test the following element :
 # 1   - Connect to the DB
@@ -14,16 +14,16 @@ from libs.settings import neo4j_database
 
 def main():
     # 1 - Connect to the DB
-    print(colors.INFO,"[i] Try to connect on the DB '{}:{}'".format(neo4j_database.HOSTNAME, neo4j_database.PORT))
+    print(colors.INFO,"[i] Try to connect on the DB '{}:{}'".format(n.HOSTNAME, n.db.PORT))
     try:
-        DB = Graph(neo4j_database.HOSTNAME + ":" + neo4j_database.PORT, auth=(neo4j_database.USER, neo4j_database.PWD))
+        DB = Graph(n.HOSTNAME + ":" + n.db.PORT, auth=(n.db.USER, n.db.PWD))
         DB.delete_all()
     except Exception:
         print(colors.reset)
         traceback.print_exc()
-        print(colors.ERROR,"[!] Can't connect to the DB 'http://{}:{}'".format(neo4j_database.HOSTNAME, neo4j_database.PORT))
+        print(colors.ERROR,"[!] Can't connect to the DB 'http://{}:{}'".format(n.HOSTNAME, n.db.PORT))
         sys.exit(1)
-    print(colors.OK,"[+] Can connecte to the DB '{}:{}'".format(neo4j_database.HOSTNAME, neo4j_database.PORT))
+    print(colors.OK,"[+] Can connecte to the DB '{}:{}'".format(n.HOSTNAME, n.db.PORT))
     # 2.1 - Create nodes and add to the DB
     print(colors.INFO,"[i] Create nodes and add to the DB")
     try:
@@ -31,7 +31,7 @@ def main():
         for name in ("Alice", "Bob", "Charlie"):
             node = Node("Person", name=name)
             tx.create(node)
-        tx.commit()
+        DB.commit(tx)
     except Exception:
         print(colors.reset)
         traceback.print_exc()
@@ -67,7 +67,7 @@ def main():
             else:
                 knows = Relationship(tab_of_nodes[i], "KNOWS", tab_of_nodes[i + 1])
             tx.create(knows)
-        tx.commit()
+        DB.commit(tx)
     except Exception:
         print(colors.reset)
         traceback.print_exc()
