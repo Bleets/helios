@@ -2,3 +2,4 @@ neo4j/*
 data/private/*
 test/*
 conf/credentials
+src/test.json

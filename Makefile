@@ -12,7 +12,7 @@ DOCKER_RUN  = docker run \
 							-v $(CURRENT_DIR)/neo4j/logs:/logs \
 							-v $(CURRENT_DIR)/neo4j/import:/var/lib/neo4j/import \
 							-v $(CURRENT_DIR)/neo4j/plugins:/plugins \
-							--env NEO4J_AUTH=neo4j/test \
+							--env NEO4J_AUTH=none \
 							--env AWS_ACCESS_KEY_ID="$(AWS_ACCESS_KEY_ID)" \
 							--env AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)" \
 							$(DOCKER_NAME)
@@ -24,6 +24,7 @@ AWS_SECRET_ACCESS_KEY = $$(aws configure get aws_secret_access_key --profile cor
 # Some shortcut
 DOCKER_EXEC = docker exec -it $(DOCKER_NAME) /bin/bash -c 
 ERASE_DATA = $(DOCKER_EXEC) "python3 erase.py"
+ENV = default
 ##
 ## Management Command
 ##------------------------------
@@ -39,8 +40,10 @@ start: ## Start the container
 	@$(DOCKER_EXEC) "sleep 15 && python3 collect.py dev"
 
 stop: ## Clean the DB and stop the container
-	@$(ERASE_DATA)
 	@docker stop $(DOCKER_NAME)
+
+clean: ## Remove all the data
+	@rm -fr neo4j
 
 ##
 ## Project Command 
@@ -48,7 +51,7 @@ stop: ## Clean the DB and stop the container
 
 refresh: ## Refresh all data
 	@$(ERASE_DATA)
-	@$(DOCKER_EXEC) "python3 collect.py ${ENV}"
+	@$(DOCKER_EXEC) "python3 collect.py -p ${ENV} -v"
 
 cmap: ## Cloud Mapper with a DNS in entrypoint
 	@$(ERASE_DATA)
@@ -58,13 +61,10 @@ cmap: ## Cloud Mapper with a DNS in entrypoint
 ## Debug Command
 ##------------------------------
 
-clean: ## Remove the container use for the project
-	@docker rm $(DOCKER_NAME)
-
 bash: ## Access to the container throught /bin/bash
 	@docker exec -it $(DOCKER_NAME) /bin/bash
 
-debug: ## Execute all test on neo4j datbase
+debug: ## Launch script to test the connection with neo4j database
 	@$(DOCKER_EXEC) "python3 test/neo4j_connect.py"
 
 .PHONY: build start stop refresh cmap clean bash

@@ -1,128 +1,87 @@
+import sys, argparse, os, traceback
 from py2neo import *
-import boto3
-import sys
-import pprint  # DEGUB : For well display dict
-import cmap as CMAP
 
-DB = Graph("http://localhost:7474", auth=("neo4j", "test"))
+# Our Librairies 
+from libs.colors import colors
+from libs.settings import *
+from libs.aws_services import AWS
+from libs.neo4j_services import Neo4j
 
-# Setup envirnment
-def setup_env(profile="default"):
-    if profile != "default":
-        print("INFO : Init environment on profile {}".format(profile))
-        boto3.setup_default_session(profile_name=profile)
-
-
-def usage():
-    print("This is the usage")
-
-
-def route53_collect():
-    try:
-        tx = DB.begin()
-        r53_client = boto3.client("route53")
-
-        # - Get ID of all hosted zones
-        for hostedzone in r53_client.list_hosted_zones(MaxItems="3")["HostedZones"]:
-            id_hostedzone = hostedzone["Id"].split("/")[2]
-
-            # -- Create zone node
-            zone = Node(
-                "Route53_ZONE",
-                name=hostedzone["Name"],
-                ID=id_hostedzone,
-                PrivateZone=hostedzone["Config"]["PrivateZone"],
-                RecordSetCount=hostedzone["ResourceRecordSetCount"],
-            )
-            tx.create(zone)
-
-            # For each zone dump all records (MaxItems=100) and create node
-            list_record_set = r53_client.list_resource_record_sets(
-                HostedZoneId=id_hostedzone
-            )
-            route53_record_create_node(zone, list_record_set, r53_client, tx)
-
-            # -- WARNING :
-            ## Don't uncomment the code below this will break the limit of MaxItems and
-            ## the visualieation of data in your browser will lag if you don't have a powerfull PC
-
-            # while list_record_set["IsTruncated"]:
-            #     list_record_set = r53_client.list_resource_record_sets(
-            #         HostedZoneId=id_hostedzone,
-            #         StartRecordName=str(list_record_set["NextRecordName"]),
-            #         StartRecordType=str(list_record_set["NextRecordType"]),
-            #     )
-            #     route53_record_create_node(zone, list_record_set, r53_client, tx)
-
-        DB.commit(tx)
-    except Exception as error:
-        print("An error occurred getting Route53 ressource:")
-        print(str(error))
-        raise
-
-
-def route53_record_create_node(zone, list_record_set, r53_client, tx):
-    for name in list_record_set["ResourceRecordSets"]:
-        # If is an Alias
-        matcher = NodeMatcher(tx)
-        if "AliasTarget" in name:
-            # Create record node
-            record = Node("Route53_RECORD", name=name["Name"], Type=name["Type"])
-
-            # Find if an node Route53_RECORD_ALIAS all ready exist
-            alias = matcher.match(
-                "Route53_RECORD_ALIAS", name=name["AliasTarget"]["DNSName"]
-            ).first()
-            # If the node doesn't exist create it
-            if not alias:
-                alias = Node(
-                    "Route53_RECORD_ALIAS",
-                    name=name["AliasTarget"]["DNSName"],
-                    HostedZoneId=name["AliasTarget"]["HostedZoneId"],
-                    EvaluateTargetHealth=name["AliasTarget"]["EvaluateTargetHealth"],
-                )
-                tx.create(alias)
-
-            record_to_alias = Relationship(record, "ALIAS", alias)
-            tx.create(record_to_alias)
-        # If is not an Alias
-        else:
-            record = Node(
-                "Route53_RECORD", name=name["Name"], Type=name["Type"], TTL=name["TTL"]
-            )
-
-            # List all value for a record
-            for ressource in name["ResourceRecords"]:
-                # Create value node
-                value = matcher.match(
-                    "Route53_RECORD_VALUE", name=ressource["Value"]
-                ).first()
-                if not value:
-                    value = Node("Route53_RECORD_VALUE", name=ressource["Value"])
-                    tx.create(value)
-                # Create the relationship between the record and thoses values
-                record_to_value = Relationship(record, "VALUE", value)
-                tx.create(record_to_value)
-
-        zone_to_record = Relationship(zone, "CONTENT", record)
-        tx.create(record)
-        tx.create(zone_to_record)
-
+# -- Setup Parser
+def setup_parser():
+    parser = argparse.ArgumentParser(
+        description="This programs will collect all information about your aws account"
+    )
+    parser.add_argument(
+        "-p",
+        "--profile",
+        help="Which profile you want to run (DEFAULT: default)"
+    )
+    parser.add_argument(
+        "-r",
+        "--region",
+        help="Which region you want to run the script (DEFAULT: eu-west-1)"
+    )
+    # parser.add_argument(
+    #     "-s",
+    #     "--services",
+    #     help="The list of all services you want or config file"
+    # )
+    parser.add_argument(
+        "-v", "--verbose", action="count", help="Increase output verbosity (v, vv, vvv)"
+    )
+    return parser
 
 def main():
     # - Collect
     # -- Route 53
-    print("INFO : Collect all information on Route53")
-    route53_collect()
+    print(colors.INFO,"[i] AWS.Route53 : Try collect all information",colors.reset)
+    try:
+        data_route53 = AWS.Route53.collect()
+    except Exception:
+        print(colors.reset)
+        traceback.print_exc()
+        print(colors.ERROR,"[!] AWS.Route53 : An error occurred while collect information")
+        sys.exit(1)
+    print(colors.OK,"[+] AWS.Route53 : All information have been collected",colors.reset)
+
     # -- CloudFront
     # -- S3
     # -- ALB
+    print(colors.OK,"[+] All info have been retrieved successfully")
+
+    # - Build all Node and Relation needed
+    # -- Route53
+    print(colors.INFO,"[i] Neo4j.Route53 : Try create node and relattion",colors.reset)
+    try:
+        if Neo4j.AWS.Route53.create_all_ressource(data_route53):
+            print(colors.INFO,"[i] Neo4j.Route53 : You don't have ressource",colors.reset)
+        else:
+            pass
+    except Exception:
+        print(colors.reset)
+        traceback.print_exc()
+        print(colors.ERROR,"[!] Neo4j.Route53 : An error occurred while created node and relation")
+        sys.exit(1)
+    print(colors.OK,"[+] Neo4j.Route53 : All information have been created",colors.reset)
+
+    print(colors.OK,"[+] All Nodes and Relations have been created go on {} to see the result".format(Neo4j.HOSTNAME+Neo4j.DB.PORT))
 
 
 if __name__ == "__main__":
-    if len(sys.argv) <= 2:
-        if len(sys.argv) == 2:
-            setup_env(sys.argv[1])
-        main()
-    else:
-        usage()
+    # - Setup Env
+    parser = setup_parser()
+    args = parser.parse_args()
+    VERBOSITY = args.verbose if args.verbose else 0
+    PROFILE = args.profile if args.profile else AWS.PROFILE
+    # Info : We set the region with the environment variable because
+    #       "Session" method or "Config()" doesn't work or overwrite the
+    #       Region set in ~/.aws/config
+    os.environ["AWS_DEFAULT_REGION"] = args.region if args.region else AWS.REGION
+    AWS.setup_profile(PROFILE)
+    
+    if VERBOSITY:
+        General.verbose(VERBOSITY, os.environ["AWS_DEFAULT_REGION"],"Region")
+        General.verbose(VERBOSITY, PROFILE,"Profile")
+
+    main()

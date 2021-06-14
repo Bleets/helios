@@ -3,7 +3,7 @@
 -	**Cartographier toute une infrastructure AWS en live**
     - [ ] Récupérer un paramètre d'environment lors du `make start` :calendar:
     - [ ] Récupérer et mettre en forme les informations avec le SDK d'AWS en python
-      - [ ] Route53 :calendar:
+      - [x] Route53 :calendar:
       - [ ] CloudFront :calendar:
       - [ ] S3 :calendar:
       - [ ] ALB :calendar:
@@ -40,3 +40,12 @@
     -  [ ] Pouvoir anonymisé le rendu :calendar: 
 -	**Doit fonctionner seulement avec des droits de lectures au maximum possibles**
     -  [ ] S'assurer que seul le droit IAM `arn:aws:iam::aws:policy/ReadOnlyAccess` :calendar:
+- **Upgrade:**
+  - [ ] Ajouté le fait de pouvoir personnaliser la collect (le type de record dans R53)
+- **Bug fix :**
+  - [ ] Au démarage il n'arrive pas à lancer la collect car le serveur n'est pas encore actif
+  - [ ] Problème pagination HostedZone
+
+- Collect d'information sur Cloudfront
+- Creer les relations entre Route53 et Cloudfront
+- Rendre la pagination en option

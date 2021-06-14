@@ -3,19 +3,19 @@ from py2neo import *
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from libs.colors import colors
-from libs.settings import neo4j as n
+from libs.settings import Neo4j as N
     
 def main():
     # Cleanup all mess
     try:
-        DB = Graph(n.HOSTNAME + ":" + n.db.PORT, auth=(n.db.USER, n.db.PWD))
+        DB = N.DB.connect()
         DB.delete_all()
     except Exception:
         print(colors.reset)
         traceback.print_exc()
-        print(colors.ERROR,"[!] Can't connect to the DB '{}:{}'".format(n.HOSTNAME, n.db.PORT))
+        print(colors.ERROR,"[!] Can't connect to the DB '{}:{}'".format(N.HOSTNAME, N.DB.PORT))
         sys.exit(1)
-    print(colors.OK,"[+] Can connect to the DB '{}:{}'".format(n.HOSTNAME, n.db.PORT))
+    print(colors.OK,"[+] Can connect to the DB '{}:{}'".format(N.HOSTNAME, N.DB.PORT))
 
     tx = DB.begin()
     try:

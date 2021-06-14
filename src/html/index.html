@@ -1,19 +1,65 @@
-<article class="guide">
+<article class="guide" ng-controller="AdLibDataController">
   <carousel class="deck container-fluid">
-
     <slide class="row-fluid">
       <div class="col-sm-12">
-        <h3 style="margin-bottom: 0.3em;">Welcome in Helios</h3>
+        <h3>Welcome</h3>
         <br />
         <div>
+          <div class="paragraph">
+            <p>Welcome to Helios</p>
+          </div>
+          <div class="paragraph">
+            <p>To display all your infra materials, press the following operation :</p>
+          </div>
           <div class="listingblock">
             <div class="content">
               <pre mode="cypher"
                 class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
-                data-lang="cypher" lang="cypher">
-<!--code class="cypher language-cypher"-->MATCH (n) return n<!--/code-->
-              </pre>
+                data-lang="cypher" lang="cypher">MATCH (n) return n</pre>
             </div>
+          </div>
+        </div>
+      </div>
+    </slide>
+
+    <!-- <slide class="row-fluid">
+      <div class="col-sm-12">
+        <h3>More to go</h3>
+        <br />
+        <div>
+          <h4>Creating Data</h4>
+          <div class="listingblock">
+            <div class="content">
+              <pre mode="cypher"
+                class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
+                data-lang="cypher" lang="cypher">TODO</pre>
+            </div>
+          </div>
+          <h4>Querying Data</h4>
+          <input style="display:inline;width:30%;" value-for="name" class="form-control" value="Neo4j" size="40">
+          <div class="listingblock">
+            <div class="content">
+              <pre mode="cypher"
+                class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
+                data-lang="cypher" lang="cypher">MATCH (db:Database {name:'<span value-key="name">Neo4j</span>'})
+  RETURN db</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </slide> -->
+
+    <slide class="row-fluid">
+      <div class="col-sm-12">
+        <h3>Links</h3>
+        <br />
+        <div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p><a href="https://github.com/Bleets/helios">Our Github Project</a></p>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

@@ -38,3 +38,4 @@ class colors:
     ERROR = reset + bold + fg.red
     INFO = reset + bold + fg.yellow
     VERBOSE = reset + fg.lightcyan
+    DEBUG = reset + fg.purple

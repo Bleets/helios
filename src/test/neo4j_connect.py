@@ -3,7 +3,7 @@ import traceback, sys, os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from libs.colors import colors
-from libs.settings import neo4j as n
+from libs.neo4j_services import Neo4j as N
 
 # -- This Script test the following element :
 # 1   - Connect to the DB
@@ -14,22 +14,22 @@ from libs.settings import neo4j as n
 
 def main():
     # 1 - Connect to the DB
-    print(colors.INFO,"[i] Try to connect on the DB '{}:{}'".format(n.HOSTNAME, n.db.PORT))
+    print(colors.INFO,"[i] Try to connect on the DB '{}:{}'".format(N.HOSTNAME, N.DB.PORT))
     try:
-        DB = Graph(n.HOSTNAME + ":" + n.db.PORT, auth=(n.db.USER, n.db.PWD))
+        DB = N.DB.connect()
         DB.delete_all()
     except Exception:
         print(colors.reset)
         traceback.print_exc()
-        print(colors.ERROR,"[!] Can't connect to the DB 'http://{}:{}'".format(n.HOSTNAME, n.db.PORT))
+        print(colors.ERROR,"[!] Can't connect to the DB '{}:{}'".format(N.HOSTNAME, N.DB.PORT))
         sys.exit(1)
-    print(colors.OK,"[+] Can connecte to the DB '{}:{}'".format(n.HOSTNAME, n.db.PORT))
+    print(colors.OK,"[+] Can connecte to the DB '{}:{}'".format(N.HOSTNAME, N.DB.PORT))
     # 2.1 - Create nodes and add to the DB
     print(colors.INFO,"[i] Create nodes and add to the DB")
     try:
         tx = DB.begin()
         for name in ("Alice", "Bob", "Charlie"):
-            node = Node("Person", name=name)
+            node = Node("Person", name=name,ID="test")
             tx.create(node)
         DB.commit(tx)
     except Exception:
