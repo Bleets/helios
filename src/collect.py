@@ -37,15 +37,15 @@ def setup_parser():
 def main():
     # - Collect
     # -- Route 53
-    # print(colors.INFO,"[i] AWS.Route53 : Try collect all information",colors.reset)
-    # try:
-    #     data_route53 = AWS.Route53.collect()
-    # except Exception:
-    #     print(colors.reset)
-    #     traceback.print_exc()
-    #     print(colors.ERROR,"[!] AWS.Route53 : An error occurred while collect information")
-    #     sys.exit(1)
-    # print(colors.OK,"[+] AWS.Route53 : All information have been collected",colors.reset)
+    print(colors.INFO,"[i] AWS.Route53 : Try collect all information",colors.reset)
+    try:
+        data_route53 = AWS.Route53.collect()
+    except Exception:
+        print(colors.reset)
+        traceback.print_exc()
+        print(colors.ERROR,"[!] AWS.Route53 : An error occurred while collect information")
+        sys.exit(1)
+    print(colors.OK,"[+] AWS.Route53 : All information have been collected",colors.reset)
 
     # -- CloudFront
     print(colors.INFO,"[i] AWS.CloudFront : Try collect all information",colors.reset)
@@ -68,18 +68,18 @@ def main():
 
     # - Neo4j
     # -- Route53
-    # print(colors.INFO,"[i] Neo4j.Route53 : Try create node and relattion",colors.reset)
-    # try:
-    #     if Neo4j.AWS.Route53.create_all_ressources(data_route53):
-    #         print(colors.INFO,"[i] Neo4j.Route53 : You don't have ressource",colors.reset)
-    #     else:
-    #         pass
-    # except Exception:
-    #     print(colors.reset)
-    #     traceback.print_exc()
-    #     print(colors.ERROR,"[!] Neo4j.Route53 : An error occurred while created node and relation")
-    #     sys.exit(1)
-    # print(colors.OK,"[+] Neo4j.Route53 : All information have been created",colors.reset)
+    print(colors.INFO,"[i] Neo4j.Route53 : Try create node and relattion",colors.reset)
+    try:
+        if Neo4j.AWS.Route53.create_all_ressources(data_route53):
+            print(colors.INFO,"[i] Neo4j.Route53 : You don't have ressource",colors.reset)
+        else:
+            pass
+    except Exception:
+        print(colors.reset)
+        traceback.print_exc()
+        print(colors.ERROR,"[!] Neo4j.Route53 : An error occurred while created node and relation")
+        sys.exit(1)
+    print(colors.OK,"[+] Neo4j.Route53 : All information have been created",colors.reset)
     
     # -- Cloudfront
     print(colors.INFO,"[i] Neo4j.Cloudfront : Try create node and relattion",colors.reset)

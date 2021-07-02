@@ -2,7 +2,7 @@ from boto3 import NullHandler
 from py2neo import Graph,Node
 from py2neo.data import Relationship
 from py2neo.errors import Neo4jError
-from py2neo.matching import NodeMatcher
+from py2neo.matching import NodeMatcher,ENDS_WITH
 
 from libs.aws_services import AWS
 
@@ -24,6 +24,17 @@ class Neo4j:
         def connect():
             return Graph(Neo4j.HOSTNAME+":"+Neo4j.DB.PORT)
     class AWS:
+      # class Associations:
+      #   def route53_cloudfront():
+      #     neo4j_db = Neo4j.DB.connect()
+      #     neo4j_tx = neo4j_db.begin()
+      #     matcher = NodeMatcher(neo4j_db)
+
+      #     r53_nodes = matcher.match("ROUTE53_ENDPOINT",name=ENDS_WITH(".cloudfront.net.")).all()
+
+      #     if len(r53_nodes):
+      #       for node in 
+
       class Route53:
         def create_all_ressources(data_route53:list):
           responce = 1

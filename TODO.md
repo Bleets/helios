@@ -48,5 +48,7 @@
 
 
 - Creer les relations entre Route53 et Cloudfront
+- mettre en place le système pour mesurer le temps d'exécutions
+- Mettre en place les async/await
 - Rendre la pagination en option
 - Gérer les lambdaEdge

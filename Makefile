@@ -4,8 +4,8 @@ DOCKER_RUN  = docker run \
 							-it\
 							--rm \
 							--name $(DOCKER_NAME) \
-							-p127.0.0.1:7474:7474 -p127.0.0.1:7687:7687 \
-							-p127.0.0.1:80:8000 \
+							-p7474:7474 -p7687:7687 \
+							-p80:8000 \
 							-d \
 							-v $(CURRENT_DIR)/src:/app \
 							-v $(CURRENT_DIR)/neo4j/data:/data \
