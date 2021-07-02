@@ -46,7 +46,7 @@
   - [ ] Au démarage il n'arrive pas à lancer la collect car le serveur n'est pas encore actif
   - [ ] Problème pagination HostedZone
 
-- Collect d'information sur Cloudfront
-  - Faire une fonction pour ajouter chaque élément
+
 - Creer les relations entre Route53 et Cloudfront
 - Rendre la pagination en option
+- Gérer les lambdaEdge

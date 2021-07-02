@@ -156,7 +156,20 @@ class Neo4j:
               neo4j_tx.create(relation_default_behavior)
               
               # - CLOUDFRONT_CACHE_BEHAVIOR
-
+              if cloudfront["CacheBehaviors"]["Quantity"]:
+                for behavior in cloudfront["CacheBehaviors"]["Items"]:
+                  behavior_node = Neo4j.AWS.Cloudfront.create_behavior(behavior)
+                  origin_node = Neo4j.AWS.Cloudfront.find_node_origin(
+                    neo4j_tx,
+                    target_id=behavior["TargetOriginId"],
+                    list_of_origin=cloudfront["Origins"]["Items"]
+                  )
+                  relation_cloudfront_behavior = Relationship(cloudfront_node,"BEHAVIOR",behavior_node)
+                  relation_behavior_origin = Relationship(behavior_node,"CACHE",origin_node)
+                  neo4j_tx.create(behavior_node)
+                  neo4j_tx.create(relation_cloudfront_behavior)
+                  neo4j_tx.create(relation_behavior_origin)
+              
               neo4j_tx.create(cloudfront_node)
           
           neo4j_db.commit(neo4j_tx)
@@ -181,19 +194,18 @@ class Neo4j:
             
           return origin_node
 
-        # def create_behavior(neo4_connect,default_behavior:dict=False,cache_behavior:dict=False,list_of_origins:list)
-        #   if not default_behavior:
-        #     # - Cache_Behvior
-        #     behavior_node = Node("Node",
-        #       name=
-        #     )
-        #   else:
-        #     # - Default_Behvior
-        #     behavior_node = Node("CLOUDFRONT_DEFAULT_BEHAVIOR",
-        #       name=
-        #     )
+        def create_behavior(behavior:list):
+          behavior_node = Node("CLOUDFRONT_BEHAVIOR",
+            name=behavior["PathPattern"],
+            ViewerProtocolPolicy=behavior["ViewerProtocolPolicy"],
+            DefaultTTL=behavior["DefaultTTL"],
+            MinTTL=behavior["MinTTL"],
+            MaxTTL=behavior["MaxTTL"],
+            AllowedMethods=behavior["AllowedMethods"]["Items"]
+          )
       
-        #   return behavior_node
+          return behavior_node
+
         def find_node_origin(neo4j_connector,domain_name:str=False,target_id:str=False, list_of_origin:list=False):
           if not domain_name :
             for origin in list_of_origin:
