@@ -42,10 +42,15 @@
     -  [ ] S'assurer que seul le droit IAM `arn:aws:iam::aws:policy/ReadOnlyAccess` :calendar:
 - **Upgrade:**
   - [ ] Ajouté le fait de pouvoir personnaliser la collect (le type de record dans R53)
+  - [ ] Ajouté une gestion du niveau de log
 - **Bug fix :**
   - [ ] Au démarage il n'arrive pas à lancer la collect car le serveur n'est pas encore actif
   - [ ] Problème pagination HostedZone
+  - [ ] Ajouter le up des noeuds au démarage
+  - [ ] Réorganiser le repo (webserver dans html)
 
-- Collect d'information sur Cloudfront
-- Creer les relations entre Route53 et Cloudfront
+
+- faire la partie paramétrage avec un fichier YAML
 - Rendre la pagination en option
+- mettre si la HostedZone est privé ?
+- mettre les sortis de function ( -> )

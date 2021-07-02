@@ -37,12 +37,13 @@ build: ## Build the container
 
 start: ## Start the container
 	@$(DOCKER_RUN) && docker ps -a
-	@$(DOCKER_EXEC) "sleep 15 && python3 collect.py dev"
+	@$(DOCKER_EXEC) "sleep 15 && python3 main.py -p ${ENV}"
 
 stop: ## Clean the DB and stop the container
 	@docker stop $(DOCKER_NAME)
 
 clean: ## Remove all the data
+	@$(ERASE_DATA)
 	@rm -fr neo4j
 
 ##
@@ -51,7 +52,7 @@ clean: ## Remove all the data
 
 refresh: ## Refresh all data
 	@$(ERASE_DATA)
-	@$(DOCKER_EXEC) "python3 collect.py -p ${ENV} -v"
+	@$(DOCKER_EXEC) "python3 main.py -p ${ENV} -v"
 
 cmap: ## Cloud Mapper with a DNS in entrypoint
 	@$(ERASE_DATA)

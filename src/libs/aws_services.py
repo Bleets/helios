@@ -4,7 +4,7 @@ import re
 # - DEBUG
 import json, sys
 
-from libs.settings import General
+from .settings import General
 from .colors import colors
 
 class AWS:
@@ -16,7 +16,7 @@ class AWS:
         print(colors.INFO,"[i] Init environment on profile {}".format(profile),colors.reset)
         boto3.setup_default_session(profile_name=profile)
   
-  class Route53:
+  class ROUTE53:
     def collect():
       r53_data = {"Route53":{"HostedZones":[]}}
       r53_client = boto3.client("route53")
@@ -33,7 +33,7 @@ class AWS:
           next_marker = response["NextMarker"]
 
       for hosted_zone in response["HostedZones"]:
-        r53_data["Route53"]["HostedZones"].append(AWS.Route53.collect_record_set(r53_client,hosted_zone))
+        r53_data["Route53"]["HostedZones"].append(AWS.ROUTE53.collect_record_set(r53_client,hosted_zone))
       
       return r53_data
 
@@ -62,7 +62,7 @@ class AWS:
         else:
           response = r53_client.list_resource_record_sets(HostedZoneId=HostedZone["Id"])
 
-        data["ResourceRecordSets"].append(AWS.Route53.filter_record(response["ResourceRecordSets"],list_of_type))
+        data["ResourceRecordSets"].append(AWS.ROUTE53.filter_record(response["ResourceRecordSets"],list_of_type))
         
         if not response["IsTruncated"]:
           break
@@ -100,6 +100,40 @@ class AWS:
           print(colors.DEBUG,"{} for {}".format(len(hosted_zones["ResourceRecordSets"]),hosted_zones["Name"]),colors.reset)
           cpt += len(hosted_zones["ResourceRecordSets"])
       print(colors.DEBUG,"Total of recordset = {}".format(cpt),colors.reset)
+
+  class Cloudfront:
+    def collect():
+      cloudfront_data = {"Cloudfront":{"Items":[]}}
+      cloudfront_client = boto3.client("cloudfront")
+
+      next_marker = ""
+      while True:
+        if len(next_marker):
+          response = cloudfront_client.list_distributions(Marker=next_marker)
+        else:
+          response = cloudfront_client.list_distributions()
+
+        if len(response["DistributionList"]["Items"]):
+          for cloudfront in response["DistributionList"]["Items"]:
+            cloudfront_data["Cloudfront"]["Items"].append(cloudfront)
+        
+        if not response["DistributionList"]["IsTruncated"]:
+          break
+        else:
+          next_marker = response["DistributionList"]["NextMarker"]
+      
+      return cloudfront_data
+
+    def check_have_aliases(cloudfront:dict):
+      return cloudfront["Aliases"]["Items"][0] if cloudfront["Aliases"]["Quantity"] else cloudfront["DomainName"]
+    
+    def check_is_custom_origin(origin:dict):
+      return True if "CustomOriginConfig" in list(origin.keys()) else False
+
+    def get_list_aliases(dict_aliases:dict):
+      return dict_aliases["Items"] if dict_aliases["Quantity"] else 0
+    
+    # def get_domain_name_behavior
 
   
   class S3:
