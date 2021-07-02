@@ -1,4 +1,4 @@
-from py2neo import Graph
+import traceback,sys
 
 from .colors import colors
 
@@ -34,3 +34,16 @@ class General:
                         filtered_data.update({element[1]:data[element[0]][element[1]]})
 
         return filtered_data
+    
+    async def collect(service:str,function_call) -> dict:
+        print(colors.INFO,"[i] AWS.{} : Try collect all information".format(service),colors.reset)
+        try:
+            data = await function_call()
+        except Exception:
+            print(colors.reset)
+            traceback.print_exc()
+            print(colors.ERROR,"[!] AWS.{} : An error occurred while collect information".format(service),colors.reset)
+            sys.exit(1)
+        print(colors.OK,"[+] AWS.{} : All information have been collected".format(service),colors.reset)
+
+        return data

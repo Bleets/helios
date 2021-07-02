@@ -1,3 +1,5 @@
+import asyncio
+from asyncio.tasks import sleep
 import collections
 import boto3
 import re
@@ -17,12 +19,14 @@ class AWS:
         boto3.setup_default_session(profile_name=profile)
   
   class Route53:
-    def collect():
+    async def collect():
       r53_data = {"Route53":{"HostedZones":[]}}
       r53_client = boto3.client("route53")
 
       next_marker = ""
       while True:
+        await asyncio.sleep(0)
+        print("Je passe à Route53")
         if len(next_marker):
           response = r53_client.list_hosted_zones(Marker=next_marker)
         else:
@@ -33,11 +37,11 @@ class AWS:
           next_marker = response["NextMarker"]
 
       for hosted_zone in response["HostedZones"]:
-        r53_data["Route53"]["HostedZones"].append(AWS.Route53.collect_record_set(r53_client,hosted_zone))
+        r53_data["Route53"]["HostedZones"].append(await AWS.Route53.collect_record_set(r53_client,hosted_zone))
       
       return r53_data
 
-    def collect_record_set(r53_client,HostedZone:dict):
+    async def collect_record_set(r53_client,HostedZone:dict):
       list_of_type = ["A","AAAA","CNAME"]
 
       data = General.filter_data(HostedZone,[
@@ -53,6 +57,7 @@ class AWS:
       start_record_name = ""
       start_record_type = ""
       while True:
+        await asyncio.sleep(0)
         if len(start_record_name):
           response = r53_client.list_resource_record_sets(
             HostedZoneId=HostedZone["Id"],
@@ -102,12 +107,14 @@ class AWS:
       print(colors.DEBUG,"Total of recordset = {}".format(cpt),colors.reset)
 
   class Cloudfront:
-    def collect():
+    async def collect():
       cloudfront_data = {"Cloudfront":{"Items":[]}}
       cloudfront_client = boto3.client("cloudfront")
 
       next_marker = ""
       while True:
+        await asyncio.sleep(0)
+        print("Je passe à Cloudfront")
         if len(next_marker):
           response = cloudfront_client.list_distributions(Marker=next_marker)
         else:
