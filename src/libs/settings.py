@@ -28,6 +28,9 @@ class General:
                 filtered_data.update({element:data[element]})
             else:
                 if len(element) == 2:
-                    filtered_data.update({element[1]:data[element[0]][element[1]]})
+                    if element[1] == "Items":
+                        filtered_data.update({element[0]:data[element[0]][element[1]]})
+                    else:
+                        filtered_data.update({element[1]:data[element[0]][element[1]]})
 
         return filtered_data

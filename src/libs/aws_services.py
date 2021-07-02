@@ -101,6 +101,38 @@ class AWS:
           cpt += len(hosted_zones["ResourceRecordSets"])
       print(colors.DEBUG,"Total of recordset = {}".format(cpt),colors.reset)
 
+  class Cloudfront:
+    def collect():
+      cloudfront_data = {"Cloudfront":{"Items":[]}}
+      cloudfront_client = boto3.client("cloudfront")
+
+      next_marker = ""
+      while True:
+        if len(next_marker):
+          response = cloudfront_client.list_distributions(Marker=next_marker)
+        else:
+          response = cloudfront_client.list_distributions()
+
+        if len(response["DistributionList"]["Items"]):
+          for cloudfront in response["DistributionList"]["Items"]:
+            cloudfront_data["Cloudfront"]["Items"].append(cloudfront)
+        
+        if not response["DistributionList"]["IsTruncated"]:
+          break
+        else:
+          next_marker = response["DistributionList"]["NextMarker"]
+      
+      return cloudfront_data
+
+    def check_have_aliases(cloudfront:dict):
+      return cloudfront["Aliases"]["Items"][0] if cloudfront["Aliases"]["Quantity"] else cloudfront["DomainName"]
+    
+    def check_is_custom_origin(origin:dict):
+      return True if "CustomOriginConfig" in list(origin.keys()) else False
+
+    def get_list_aliases(dict_aliases:dict):
+      return dict_aliases["Items"] if dict_aliases["Quantity"] else 0
+
   
   class S3:
     def list_buckt(resource):

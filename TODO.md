@@ -47,5 +47,6 @@
   - [ ] Problème pagination HostedZone
 
 - Collect d'information sur Cloudfront
+  - Faire une fonction pour ajouter chaque élément
 - Creer les relations entre Route53 et Cloudfront
 - Rendre la pagination en option

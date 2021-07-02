@@ -1,24 +1,96 @@
-{
-  "Route53": {
-    "HostedZones": [
-      {
-        "Id": "string",
-        "Name": "string",
-        "PrivateZone": true,
-        "ResourceRecordSetCount": 1111,
-        "ResourceRecordSets": [
-          {
-            "Name": "string",
-            "Type": "string",
-            "TTL": 1111,
-            "ResourceRecords": [
+[
+  {
+    "Route53": {
+      "HostedZones": [
+        {
+          "Id": "string",
+          "Name": "string",
+          "PrivateZone": true,
+          "ResourceRecordSetCount": 1111,
+          "ResourceRecordSets": [
+            {
+              "Name": "string",
+              "Type": "string",
+              "TTL": 1111,
+              "ResourceRecords": [
+                {
+                  "Value": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "Cloudfront": {
+      "Items": [
+        {
+          "Id": "string",
+          "ARN": "string",
+          "Status": "string",
+          "DomainName": "string",
+          "Aliases": [
+            "string"
+          ],
+          "Origins": [
+            {
+              "Id": "string",
+              "DomainName": "string",
+              "OriginPath": "string",
+              "S3OriginConfig": "OriginAccessIdentity"
+            },
+            {
+              "Id": "string",
+              "DomainName": "string",
+              "OriginPath": "string",
+              "CustomOriginConfig": {
+                "HTTPPort": 123,
+                "HTTPSPort": 123,
+                "OriginProtocolPolicy": "http-only"|"match-viewer"|"https-only",
+              }
+            },
+          ],
+          "DefaultCacheBehavior": {
+            "TargetOriginId": "string",
+            "ViewerProtocolPolicy": "allow-all"|"https-only"|"redirect-to-https",
+            "AllowedMethods": [
+              "GET"|"HEAD"|"POST"|"PUT"|"PATCH"|"OPTIONS"|"DELETE",
+            ],
+            "LambdaFunctionAssociations": [
               {
-                "Value": "string"
+                "LambdaFunctionARN": "string",
+                "EventType": "viewer-request"|"viewer-response"|"origin-request"|"origin-response",
+                "IncludeBody": false|true
               }
             ]
-          }
-        ]
-      }
-    ]
+          },
+          "CacheBehaviors": [
+            {
+              "PathPattern": "string",
+              "TargetOriginId": "string",
+              "ViewerProtocolPolicy": "allow-all"|"https-only"|"redirect-to-https",
+              "AllowedMethods": [
+                "GET"|"HEAD"|"POST"|"PUT"|"PATCH"|"OPTIONS"|"DELETE",
+              ],
+              "LambdaFunctionAssociations": [
+                {
+                  "LambdaFunctionARN": "string",
+                  "EventType": "viewer-request"|"viewer-response"|"origin-request"|"origin-response",
+                  "IncludeBody": true|false
+                }
+              ]
+            }
+          ],
+          "Enabled": true|false,
+          "ViewerCertificate": {
+            "Certificate": "string"
+          },
+          "WebACLId": "string",
+          "IsIPV6Enabled": true|false,
+        }
+      ]
+    }
   }
-}
+]
