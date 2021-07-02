@@ -142,18 +142,19 @@ class Neo4j:
               if cloudfront["Origins"]["Quantity"]:
                 for origin in cloudfront["Origins"]["Items"]:
                   origin_node = Neo4j.AWS.Cloudfront.create_origin(neo4j_tx,origin)
-
-                  print(colors.VERBOSE,"OUTPUT.origin : {}".format(origin_node),colors.reset)
-                  print(colors.VERBOSE,"OUTPUT.cloudfront : {}".format(cloudfront_node),colors.reset)
-
                   relation_cloudfront_origin = Relationship(cloudfront_node,"ORIGIN",origin_node)
                   neo4j_tx.create(origin_node)
                   neo4j_tx.create(relation_cloudfront_origin)
               
               # - Relation - DEFAULT_BEHAVIOR
-              # default_behavior_node = Neo4j.AWS.Cloudfront.find_node_origin(neo4j_tx,cloudfront["Origins"]["Items"],cloudfront["DefaultCacheBehavior"]["TargetOriginId"])
-              # relation_default_behavior = Relationship(cloudfront,"DEFAULT_BEHAVIOR",default_behavior_node)
-              # neo4j_tx.create(relation_default_behavior)
+              default_behavior_node = Neo4j.AWS.Cloudfront.find_node_origin(
+                neo4j_tx,
+                target_id=cloudfront["DefaultCacheBehavior"]["TargetOriginId"],
+                list_of_origin=cloudfront["Origins"]["Items"]
+              )
+              relation_default_behavior = Relationship(cloudfront_node,"DEFAULT_BEHAVIOR",default_behavior_node)
+              neo4j_tx.create(relation_default_behavior)
+              
               # - CLOUDFRONT_CACHE_BEHAVIOR
 
               neo4j_tx.create(cloudfront_node)
@@ -162,9 +163,8 @@ class Neo4j:
           return responce
         
         def create_origin(neo4j_connect,origin:list):
-          origin_node = Neo4j.AWS.Cloudfront.find_node_origin(neo4j_connect,origin["DomainName"])
+          origin_node = Neo4j.AWS.Cloudfront.find_node_origin(neo4j_connect,domain_name=origin["DomainName"])
           
-          print("Before : {}".format(origin_node))
           if not origin_node:
             if AWS.Cloudfront.check_is_custom_origin(origin):
               # - Custom
@@ -172,16 +172,13 @@ class Neo4j:
                 name=origin["DomainName"],
                 Id=origin["Id"]
               )
-              print("custom")
             else:
               # - S3
               origin_node = Node("CLOUDFRONT_ORIGIN_S3",
                 name=origin["DomainName"],
                 Id=origin["Id"]
               )
-              print("s3")
             
-          print("After : {}".format(origin_node))
           return origin_node
 
         # def create_behavior(neo4_connect,default_behavior:dict=False,cache_behavior:dict=False,list_of_origins:list)
@@ -197,12 +194,16 @@ class Neo4j:
         #     )
       
         #   return behavior_node
-        def find_node_origin(neo4j_connector,domain_name:str):
+        def find_node_origin(neo4j_connector,domain_name:str=False,target_id:str=False, list_of_origin:list=False):
+          if not domain_name :
+            for origin in list_of_origin:
+              if target_id == origin["Id"]:
+                domain_name = origin["DomainName"]
+                break
+
           matcher = NodeMatcher(neo4j_connector)          
           origin_node = matcher.match("CLOUDFRONT_ORIGIN_CUSTOM",name=domain_name).first()
           if not origin_node:
             origin_node = matcher.match("CLOUDFRONT_ORIGIN_S3",name=domain_name).first()
-          else:
-            origin_node = False
           
           return origin_node

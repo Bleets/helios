@@ -132,6 +132,8 @@ class AWS:
 
     def get_list_aliases(dict_aliases:dict):
       return dict_aliases["Items"] if dict_aliases["Quantity"] else 0
+    
+    # def get_domain_name_behavior
 
   
   class S3:
