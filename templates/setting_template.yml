@@ -1,0 +1,13 @@
+level_log: INFO
+# - level_log
+# The level of output printed
+# Value = VERBOSE | INFO | ERROR
+pagination: True
+# - pagination 
+# Enable or not the pagination system
+# Value : True | False
+services:
+  - route53
+  - cloudfront
+# - services
+# All services you want to retrieve data

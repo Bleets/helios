@@ -1,9 +1,9 @@
 import traceback,sys
-
+import yaml
 from .colors import colors
 
 class General:
-    def verbose(level:int,value,name="NO_NAME"):
+    def verbose(level:int, value,name="NO_NAME"):
         if type(name) == str and level and value:
             if level >= 3:
                 print(colors.VERBOSE,'[v] {}.type = "{}"| {} = "{}" '.format(
@@ -18,7 +18,7 @@ class General:
                 else:
                     print(colors.VERBOSE,'[v] {} = "{}" '.format(name,value),colors.reset)
         else:
-            print(colors.ERROR,"[!] Wrong value in verbose()")
+            print(colors.ERROR,"[!] Wrong value in verbose()",colors.reset)
     
     def filter_data(data:dict,elements:list):
         filtered_data = {}
@@ -75,3 +75,28 @@ class General:
             sys.exit(1)
         print(colors.OK,"[+] Neo4j.Associations : All relation have been created".format(service,associate_service),colors.reset)
         return response
+    
+    def get_user_settings(file_name:str) -> list or None:
+        try:
+            with open(file_name) as setting_file:
+                responce = yaml.safe_load(setting_file)
+        except FileNotFoundError:
+            responce = {}
+            print(colors.ERROR,"[!] Error you don't have set your setting file. Default value will be use. Try 'make setup' or 'make reset_setting' to load setting file",colors.reset)
+        return responce
+    
+    def get_user_level_log(user_setting:dict) -> str:
+        return user_setting["level_log"] if user_setting.get("level_log") in ["VERBOSE","INFO","ERROR"] else "INFO"
+
+    def get_user_verbose(level_log:str) -> bool:
+        return level_log.upper() == "VERBOSE"
+
+    def get_user_pagination(user_setting:dict) -> bool:
+        return user_setting["pagination"] if user_setting.get("pagination") else True
+    
+    def get_user_services(user_setting:dict) -> list:
+        services = []
+        if user_setting.get("services"):
+            for service in user_setting.get("services"):
+                services.append(service.lower())
+        return services

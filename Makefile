@@ -23,14 +23,15 @@ AWS_SECRET_ACCESS_KEY = $$(aws configure get aws_secret_access_key --profile cor
 
 # Some shortcut
 DOCKER_EXEC = docker exec -it $(DOCKER_NAME) /bin/bash -c 
-ERASE_DATA = $(DOCKER_EXEC) "python3 erase.py"
+ERASE_DATA = $(DOCKER_EXEC) "python3 -c 'from libs.neo4j_services import Neo4j; Neo4j.DB.erase()'"
 ENV = default
 ##
 ## Management Command
 ##------------------------------
 
-setup: ## /!\ Copy your ~/.aws/credentials into a directoy gitignored /!\ 
+setup: ## /!\ Copy your ~/.aws/credentials into a directory (gitignored) and setup setting file /!\ 
 	@ cp ~/.aws/credentials conf/credentials
+	@ cp templates/setting_template.yml src/setting.yml
 
 build: ## Build the container
 	@docker build -t $(DOCKER_NAME) $(CURRENT_DIR) --no-cache
@@ -42,6 +43,9 @@ start: ## Start the container
 stop: ## Clean the DB and stop the container
 	@docker stop $(DOCKER_NAME)
 
+reset_setting: ## reset the setting file
+	@cp templates/setting_template.yml src/setting.yml
+
 clean: ## Remove all the data
 	@$(ERASE_DATA)
 	@rm -fr neo4j
@@ -52,11 +56,7 @@ clean: ## Remove all the data
 
 refresh: ## Refresh all data
 	@$(ERASE_DATA)
-	@$(DOCKER_EXEC) "python3 main.py -p ${ENV} -v"
-
-cmap: ## Cloud Mapper with a DNS in entrypoint
-	@$(ERASE_DATA)
-	@$(DOCKER_EXEC) "python3 cmap.py ${ENV} ${DNS}"
+	@$(DOCKER_EXEC) "python3 main.py -p ${ENV}"
 
 ##
 ## Debug Command

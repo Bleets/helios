@@ -18,7 +18,7 @@ class AWS:
   
   class ROUTE53:
     def collect():
-      r53_data = {"Route53":{"HostedZones":[]}}
+      r53_data = {"route53":{"HostedZones":[]}}
       r53_client = boto3.client("route53")
 
       next_marker = ""
@@ -33,7 +33,7 @@ class AWS:
           next_marker = response["NextMarker"]
 
       for hosted_zone in response["HostedZones"]:
-        r53_data["Route53"]["HostedZones"].append(AWS.ROUTE53.collect_record_set(r53_client,hosted_zone))
+        r53_data["route53"]["HostedZones"].append(AWS.ROUTE53.collect_record_set(r53_client,hosted_zone))
       
       return r53_data
 
@@ -96,14 +96,14 @@ class AWS:
 
     def display_nb_recordset(data:dict):
       cpt = 0
-      for hosted_zones in data["Route53"]["HostedZones"]:
+      for hosted_zones in data["route53"]["HostedZones"]:
           print(colors.DEBUG,"{} for {}".format(len(hosted_zones["ResourceRecordSets"]),hosted_zones["Name"]),colors.reset)
           cpt += len(hosted_zones["ResourceRecordSets"])
       print(colors.DEBUG,"Total of recordset = {}".format(cpt),colors.reset)
 
   class Cloudfront:
     def collect():
-      cloudfront_data = {"Cloudfront":{"Items":[]}}
+      cloudfront_data = {"cloudfront":{"Items":[]}}
       cloudfront_client = boto3.client("cloudfront")
 
       next_marker = ""
@@ -115,7 +115,7 @@ class AWS:
 
         if len(response["DistributionList"]["Items"]):
           for cloudfront in response["DistributionList"]["Items"]:
-            cloudfront_data["Cloudfront"]["Items"].append(cloudfront)
+            cloudfront_data["cloudfront"]["Items"].append(cloudfront)
         
         if not response["DistributionList"]["IsTruncated"]:
           break

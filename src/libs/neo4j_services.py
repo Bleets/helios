@@ -23,6 +23,11 @@ class Neo4j:
 
         def connect():
             return Graph(Neo4j.HOSTNAME+":"+Neo4j.DB.PORT)
+        
+        def erase():
+          neo4j_db = Neo4j.DB.connect()
+          neo4j_db.delete_all()
+
     class AWS:
       class Associations:
         def route53_cloudfront():
@@ -47,13 +52,13 @@ class Neo4j:
       class ROUTE53:
         def create_all_ressources(data_route53:list):
           responce = 1
-          if len(data_route53["Route53"]["HostedZones"]):
+          if len(data_route53["route53"]["HostedZones"]):
             responce = 0
             neo4j_db = Neo4j.DB.connect()
             neo4j_transaction = neo4j_db.begin()
 
-            nodes_of_hosted_zone = Neo4j.AWS.ROUTE53.create_hosted_zone(neo4j_transaction,data_route53["Route53"]["HostedZones"])
-            for hosted_zone, node in zip(data_route53["Route53"]["HostedZones"],nodes_of_hosted_zone):
+            nodes_of_hosted_zone = Neo4j.AWS.ROUTE53.create_hosted_zone(neo4j_transaction,data_route53["route53"]["HostedZones"])
+            for hosted_zone, node in zip(data_route53["route53"]["HostedZones"],nodes_of_hosted_zone):
               Neo4j.AWS.ROUTE53.create_record_sets(neo4j_transaction,node,hosted_zone["ResourceRecordSets"])
 
             neo4j_db.commit(neo4j_transaction)
@@ -142,12 +147,12 @@ class Neo4j:
       class Cloudfront:
         def create_all_ressources(data_cloudfront:list):
           responce = 1
-          if len(data_cloudfront["Cloudfront"]["Items"]):
+          if len(data_cloudfront["cloudfront"]["Items"]):
             responce = 0
             neo4j_db = Neo4j.DB.connect()
             neo4j_tx = neo4j_db.begin()
             
-            for cloudfront in data_cloudfront["Cloudfront"]["Items"]:
+            for cloudfront in data_cloudfront["cloudfront"]["Items"]:
               cloudfront_node = Node("CLOUDFRONT",
                 name=AWS.Cloudfront.check_have_aliases(cloudfront),
                 Status=cloudfront["Status"],
