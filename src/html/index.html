@@ -2,52 +2,85 @@
   <carousel class="deck container-fluid">
     <slide class="row-fluid">
       <div class="col-sm-12">
-        <h3>Welcome</h3>
+        <h3>Welcome in Helios</h3>
         <br />
-        <div>
+        <div class="col-sm-6">
           <div class="paragraph">
-            <p>Welcome to Helios</p>
+            <h4><b>-- Summary --</b></h4>
           </div>
           <div class="paragraph">
-            <p>To display all your infra materials, press the following operation :</p>
-          </div>
-          <div class="listingblock">
-            <div class="content">
-              <pre mode="cypher"
-                class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
-                data-lang="cypher" lang="cypher">MATCH (n) return n</pre>
-            </div>
+            <ol>
+              <li>
+                <a play-topic='http://localhost/index.html' style="font-size: 15px;">Home</a>
+              </li>
+              <li>
+                <a play-topic='http://localhost/quick_initiation.html' style="font-size: 15px;">Quick initiation to
+                  navigate in this
+                  windows</a>
+              </li>
+              <li>
+                <a play-topic='http://localhost/what_to_do.html' style="font-size: 15px;">What can you do in this
+                  project ?</a>
+              </li>
+              <li>
+                <a play-topic='http://localhost/aws/index.html' style="font-size: 15px;">AWS</a>
+                <ul>
+                  <li>
+                    <a play-topic='http://localhost/aws/route53/index.html' style="font-size: 15px;">Route53</a>
+                  </li>
+                  <li>
+                    <a play-topic='http://localhost/aws/cloudfront/index.html' style="font-size: 15px;">Cloudfront</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a play-topic='http://localhost/what_is_cypher.html' style="font-size: 15px;">What it's Cypher ?</a>
+              </li>
+            </ol>
           </div>
         </div>
+        <div class="col-sm-6">
+          <div class="paragraph">
+            <h4><b> ⚠️ First thing to do over all ⚠️ </b></h4>
+          </div>
+          <div class="paragraph">
+            <ul>
+              <li>
+                <p>First please, click on &nbsp;<svg class="SVGInline-svg SVGInline--cleaned-svg"
+                    style="width: 12px;height: 12px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path class="a"
+                      d="M4.949,8.783a1.5,1.5,0,0,0-.3,2.356l8.213,8.213a1.5,1.5,0,0,0,2.356-.3,7.522,7.522,0,0,0,.81-5.54l6.529-4.155a1.5,1.5,0,0,0,.256-2.326L16.97,1.188a1.5,1.5,0,0,0-2.326.255l-4.155,6.53A7.522,7.522,0,0,0,4.949,8.783Z">
+                    </path>
+                    <line class="a" x1="8.753" y1="15.246" x2="0.75" y2="23.249"></line>
+                  </svg>&nbsp; to pin this windows up, to never lose it (The pin is over there ↗️ )
+                </p>
+              </li>
+              <li>
+                <p>Finaly, please run the following command. They will update some parameter for a better
+                  experience</p>
+                <div class="listingblock">
+                  <div class="content">
+                    <pre mode="cypher"
+                      class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
+                      data-lang="cypher" lang="cypher">:config initialNodeDisplay: 2000</pre>
+                    <pre mode="cypher"
+                      class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
+                      data-lang="cypher" lang="cypher">:config maxNeighbours: 2000</pre>
+                    <pre mode="cypher"
+                      class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
+                      data-lang="cypher" lang="cypher">:config autoComplete: true</pre>
+                  </div>
+              </li>
+              <li>
+                When you have done those thing, you can go further in the project
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
       </div>
     </slide>
-
-    <!-- <slide class="row-fluid">
-      <div class="col-sm-12">
-        <h3>More to go</h3>
-        <br />
-        <div>
-          <h4>Creating Data</h4>
-          <div class="listingblock">
-            <div class="content">
-              <pre mode="cypher"
-                class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
-                data-lang="cypher" lang="cypher">TODO</pre>
-            </div>
-          </div>
-          <h4>Querying Data</h4>
-          <input style="display:inline;width:30%;" value-for="name" class="form-control" value="Neo4j" size="40">
-          <div class="listingblock">
-            <div class="content">
-              <pre mode="cypher"
-                class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
-                data-lang="cypher" lang="cypher">MATCH (db:Database {name:'<span value-key="name">Neo4j</span>'})
-  RETURN db</pre>
-            </div>
-          </div>
-        </div>
-      </div>
-    </slide> -->
 
     <slide class="row-fluid">
       <div class="col-sm-12">

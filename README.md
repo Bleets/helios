@@ -11,9 +11,8 @@ Helios, is a student project about how to map a cloud infrastructure. The goal i
     - [Help](#help)
     - [Install](#install)
     - [First Run](#first-run)
-    - [Tips](#tips)
     - [Refresh or switch AWS account](#refresh-or-switch-aws-account)
-    - [CMAP](#cmap)
+    - [Detect single point of failure](#detect-single-point-of-failure)
   - [Contributing](#contributing)
   - [Versioning](#versioning)
   - [Authors](#authors)
@@ -53,23 +52,23 @@ region = <AWS_REGION>
 ___
 The code below is the result of the command `make` in the root directory. Don't hesitate to run it on your terminal !
 ```markdown
- Management Command
-------------------------------
-setup           /!\ Copy your ~/.credentials into a directoy gitignored /!\
+ Management Command 
+------------------------------ 
+setup           /!\ Copy your ~/.aws/credentials into a directory (gitignored) and setup setting file /!\ 
 build           Build the container
 start           Start the container
 stop            Clean the DB and stop the container
-
- Project Command
-------------------------------
+reset_setting   reset the setting file
+clean           Remove all the data
+              
+ Project Command  
+------------------------------ 
 refresh         Refresh all data
-cmap            Cloud Mapper with a DNS in entrypoint
-
- Debug Command
-------------------------------
-clean           Remove the container use for the project
+              
+ Debug Command 
+------------------------------ 
 bash            Access to the container throught /bin/bash
-debug           Execute all test on neo4j datbase
+debug           Launch script to test the connection with neo4j database
 ```
 ###  Install
 ___
@@ -95,12 +94,8 @@ make start
 **2.** Go on your [localhost:7474](http://localhost:7474/browser/), , you should see this :
 ![starting image](img/start.png)
 
-**3.** Click on `MATCH (n) RETURN n`, to see all data collect
+**3.** Read what is on the right part, and check each point of the **summary**
 
-### Tips
-___
-Attach the command, so it wont scroll down after each result
-![attach command](img/attach.png)
 
 ### Refresh or switch AWS account
 ___
@@ -114,23 +109,12 @@ make refresh ENV=dev
 **2.** Go on your [localhost:7474](http://localhost:7474/browser/)
 ![starting image](img/start.png)
 
-**3.** Click on `MATCH (n) RETURN n`, to see all data collect
+**3.** Click on AWS if you want to see all global request
+![global aws image](img/global_aws.png)
 
-
-### CMAP
-___
-**CMAP** allow to see all your ressources, start with an URL.
-
-**1.** Run the following command :
-
-```bash
-# make cmap DNS=<your dns or url> ENV=<your environment>
-make cmap DNS="toto.com" ENV=dev
-```
-**2.** Go on your [localhost:7474](http://localhost:7474/browser/)
-![starting image](img/start.png)
-
-**3.** Click on `MATCH (n) RETURN n`, to see all data collect
+### Detect single point of failure
+**1.** Click on a specific service in the summary. To see if there is a command to detect potential SPOF, like in Cloudfront
+![cloudfront command image](img/aws_cloudfront.png)
 
 ## Contributing
 

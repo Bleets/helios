@@ -1,0 +1,65 @@
+<article class="guide" ng-controller="AdLibDataController">
+  <div class="col-sm-3">
+    <div class="paragraph">
+      <h4><b>-- Summary --</b></h4>
+    </div>
+    <div class="paragraph">
+      <ol>
+        <li>
+          <a play-topic='http://localhost/index.html' style="font-size: 15px;">Home</a>
+        </li>
+        <li>
+          <a play-topic='http://localhost/quick_initiation.html' style="font-size: 15px;">Quick initiation to
+            navigate in the
+            project</a>
+        </li>
+        <li>
+          <a play-topic='http://localhost/what_to_do.html' style="font-size: 15px;">What can you do in this project
+            ?</a>
+        </li>
+        <li>
+          <a play-topic='http://localhost/aws/index.html' style="font-size: 15px;">AWS</a>
+          <ul>
+            <li>
+              <a play-topic='http://localhost/aws/route53/index.html' style="font-size: 15px;">Route53</a>
+            </li>
+            <li>
+              <a play-topic='http://localhost/aws/cloudfront/index.html' style="font-size: 15px;">Cloudfront</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a play-topic='http://localhost/what_is_cypher.html' style="font-size: 15px;">What it's Cypher ?</a>
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="paragraph" style="text-align: center;">
+      <h3>Cloudfront</h3>
+      <img src="http://localhost/img/aws_cloudfront.svg" alt="logo_aws_cloudfront" height="35%" width="35%" />
+    </div>
+  </div>
+  <div class="col-sm-5">
+    <div class="paragraph">
+      <ul>
+        <li>
+          Display all node about cloudfront
+          <pre mode="cypher"
+            class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
+            data-lang="cypher"
+            lang="cypher">MATCH (n:CLOUDFRONT) RETURN n UNION MATCH (n:CLOUDFRONT_ORIGIN_CUSTOM) RETURN n UNION MATCH (n:CLOUDFRONT_ORIGIN_S3) RETURN n</pre>
+        </li>
+        <li>
+          Display important CLOUDFRONT_ORIGIN_CUSTOM (Detect single point of failure)
+          <pre mode="cypher"
+            class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding"
+            data-lang="cypher"
+            lang="cypher">MATCH (a:CLOUDFRONT)-[:ORIGIN|:DEFAULT_BEHAVIOR]->(b:CLOUDFRONT_ORIGIN_CUSTOM) RETURN b, COLLECT(a) as cloudfront ORDER BY SIZE(cloudfront) DESC <b style="color: red;">LIMIT</b> 10</pre>
+          <b>Info :</b> Change the value of <b style="color: red;">LIMIT</b> if you want more or
+          less precision
+        </li>
+      </ul>
+    </div>
+  </div>
+</article>
